@@ -11,9 +11,13 @@
 
  Util.prototype = {
 	constructor: Util,
+	App: {},
 
 	init: function(version){
-		this.UI._render(version);
+		this.App.RootPath = document.location.protocol + '//'+ document.location.hostname + document.location.pathname;
+		this.App.Name = 'rOS v'+ version;
+
+		this.UI._render(version, this.App);
 	},
 
 	/*
@@ -23,7 +27,6 @@
 	UI: {
 		contextMenu: [],
 		mainMenu: [],
-		App: {}, //TODO: move to main.js | currently: Util.UI.App.prop, should be App.prop
 		backgroundImg: {},
 		ContextMenuOptions: {},
 
@@ -46,37 +49,31 @@
 				w.width = window.innerWidth;
 				w.height = window.innerHeight;
 
-			//set the canvas context - becomes global context object in main.js
+			//set the canvas context - becomes accessible globally in main.js
 			this.App.Context = w.getContext('2d');
 			this.App.Object = w;
-			this.App.Name = 'rOS v'+ version;
-
-			this.backgroundImg = new Image();
+			this.App.BackgroundImage = new Image();
 
 			document.body.insertBefore(w, document.getElementsByTagName('script')[0]);
 			
-			//set the initial background image
-			//TODO: store the latest chosen image so it is displayed when the user logs back in
-			//TODO: this is messed up, rewrite this onload statement?
-			// this.backgroundImg.onload = function(UI, canvasObj, image){
-			// 	//set the initial background image
-			// 	image.src = 'library/core/images/test.jpg';
-
-			// 	UI.drawImage(image, 0, 0, canvasObj.width, canvasObj.height);
-			// }(this.App.Context, w, this.backgroundImg);
-			this._drawBackgroundImage(this.App.Context, w, this.backgroundImg);
+			/*
+			 * Start building the interface
+			 */
+			this._drawBackgroundImage();
 			this._drawMainMenu();
-
 			this._attachListeners();
 		},
 
-		_drawBackgroundImage: function(appContext, canvasObj, image){
-			image.onload = function(UI, canvasObj, image){
-				//set the initial background image
-				image.src = './library/core/images/wallpapers/default.jpg';
+		_drawBackgroundImage: function(){
+			var App = this.App,
+				CMO = this.ContextMenuOptions;
 
-				UI.drawImage(image, 0, 0, canvasObj.width, canvasObj.height);
-			}(appContext, canvasObj, image);
+			App.BackgroundImage.onload = function(){
+				App.Context.drawImage(App.BackgroundImage, 0, 0, App.Object.width, App.Object.height);
+			};
+
+			//set the default background image
+			App.BackgroundImage.src = App.RootPath + 'library/core/images/wallpapers/default.jpg';
 		},
 
 		_drawMainMenuMARKUP_VERSION: function(){
@@ -100,7 +97,7 @@
 				AC.moveTo(0, this.ContextMenuOptions.height);
 				AC.lineTo(this.App.Object.width, this.ContextMenuOptions.height);
 				AC.stroke();
-				console.log(AC);
+
 
 				/*
 				 * Draw the gradient
@@ -147,7 +144,9 @@
 			// }(this.App.Context);
 		},
 
-		_render: function(version){
+		_render: function(version, Utility){
+			this.App = Utility;
+
 			if(!this.App.Context){
 				this._draw(version);
 			}
