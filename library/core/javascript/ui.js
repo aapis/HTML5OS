@@ -73,7 +73,7 @@
 		_drawBackgroundImage: function(appContext, canvasObj, image){
 			image.onload = function(UI, canvasObj, image){
 				//set the initial background image
-				image.src = 'library/core/images/wallpapers/default.jpg';
+				image.src = './library/core/images/wallpapers/default.jpg';
 
 				UI.drawImage(image, 0, 0, canvasObj.width, canvasObj.height);
 			}(appContext, canvasObj, image);
