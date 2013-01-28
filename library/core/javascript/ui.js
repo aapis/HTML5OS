@@ -59,14 +59,13 @@
 			/*
 			 * Start building the interface
 			 */
-			this._drawBackgroundImage();
 			this._drawMainMenu();
+			this._drawBackgroundImage();
 			this._attachListeners();
 		},
 
 		_drawBackgroundImage: function(){
-			var App = this.App,
-				CMO = this.ContextMenuOptions;
+			var App = this.App;
 
 			App.BackgroundImage.onload = function(){
 				App.Context.drawImage(App.BackgroundImage, 0, 0, App.Object.width, App.Object.height);
@@ -102,7 +101,6 @@
 				/*
 				 * Draw the gradient
 				 */
-				
 				var ctxMenuBg = AC.createLinearGradient(0,this.ContextMenuOptions.height,0,0);
 					ctxMenuBg.addColorStop(0, '#ebebeb');
 					ctxMenuBg.addColorStop(1, 'white');
@@ -128,8 +126,6 @@
 					AC.shadowOffsetX = 0;
 					AC.fillText(this.App.Name, 5, 17);
 				AC.restore();
-
-
 			}catch(Exception){
 				console.log(Exception);
 			}
