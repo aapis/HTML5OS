@@ -11,9 +11,13 @@
 
  Window.prototype = {
 	constructor: Window,
+	_context: 'window',
 
 	init: function(evt){
 		this._draw(evt);
+
+		this.Stack = new Stack(this._context);
+		console.log(this.Stack.trace());
 	},
 
 	

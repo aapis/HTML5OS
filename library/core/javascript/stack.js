@@ -67,11 +67,9 @@
 	trace: function(){
 		var StackTrace = {};
 
-		StackTrace.type = this.type;
+		StackTrace.context = this.type;
 		StackTrace.stack = this.stack[this.type];
 		
 		return StackTrace;
 	},
-
-
  }
