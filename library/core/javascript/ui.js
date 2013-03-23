@@ -11,24 +11,31 @@
 
  Util.prototype = {
 	constructor: Util,
+	_context: 'Util',
 	App: {},
+	Stack: {},
 
 	init: function(version){
 		this.App.RootPath = document.location.protocol + '//'+ document.location.hostname + document.location.pathname;
 		this.App.Name = 'rOS v'+ version;
+
+		this.Stack = new Stack(this._context);
+		this.Stack.push('test', 'val');
+		this.Stack.push('test2', 'wump');
+		console.log(this.Stack.trace());
 
 		this.UI._render(version, this.App);
 	},
 
 	/*
 	 * Class: Util.UI
-	 * 
 	 */
 	UI: {
 		contextMenu: [],
 		mainMenu: [],
 		backgroundImg: {},
 		ContextMenuOptions: {},
+		_context: 'UI',
 
 		_resetScreen: function(){
 			var elementsToClear = document.body.querySelectorAll('*:not(script)');
@@ -68,11 +75,13 @@
 			var App = this.App;
 
 			App.BackgroundImage.onload = function(){
-				App.Context.drawImage(App.BackgroundImage, 0, 0, App.Object.width, App.Object.height);
+				App.Context.drawImage(App.BackgroundImage, 0, 26, App.Object.width, App.Object.height);
 			};
 
 			//set the default background image
 			App.BackgroundImage.src = App.RootPath + 'library/core/images/wallpapers/default.jpg';
+
+			return this;
 		},
 
 		_drawMainMenuMARKUP_VERSION: function(){
@@ -129,6 +138,8 @@
 			}catch(Exception){
 				console.log(Exception);
 			}
+
+			return this;
 		},
 
 		_attachListeners: function(){
