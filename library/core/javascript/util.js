@@ -1,7 +1,7 @@
 /*
  * --------------------------------------------------
- * Class: rOS UI
- * Build, control and modify the OS chrome
+ * Class: rOS Util
+ * Utilities and helpers
  * --------------------------------------------------
  */
 
@@ -94,6 +94,8 @@
 		_drawMainMenu: function(){
 			var AC = this.App.Context;
 
+			//TODO: this.ContextMenuOptions should be something like this.MainMenuOptions as context menu is something entirely different
+
 			try {
 				/*
 				 * Draw the line separator
@@ -161,11 +163,15 @@
 	},
 
 	/*
-	 * Class: Util.IO
+	 * Class: Util.Session
 	 *
-	 * Save/load, file operations
+	 * Save/load client data
 	 */
-	IO: {
+	Session: {
+		options: {
+			useLocalStorage: !!window.localStorage,
+		},
+
 		/*
 		 * Get the data from the local client
 		 */
@@ -174,7 +180,7 @@
 
 			var value = null;
 
-			if(!Component.options.useLocalStorage){
+			if(!this.options.useLocalStorage){
 				value = this._getCookie('rOS.'+ item);
 			}else {
 				value = localStorage.getItem('rOS.'+ item);
@@ -193,7 +199,7 @@
 		store: function(item, data){
 			if(!item) return false;
 
-			if(!Component.options.useLocalStorage){
+			if(!this.options.useLocalStorage){
 				return this._setCookie('rOS.'+ item, data, expiry);
 			}else {
 				return localStorage.setItem('rOS.'+ item, JSON.stringify(data));
@@ -235,4 +241,13 @@
 			return null;
 		},
 	},
+
+	/**
+	 * Class: Util.IO
+	 *
+	 * Send/receive data between client and server
+	 */
+	IO: {
+		_createRequest: function(){},
+	}
  };

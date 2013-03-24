@@ -26,7 +26,13 @@
 	 * @return {[type]}      [description]
 	 */
 	push: function(name, value){
-		return this.stack[this.type].push({'name': name, 'value': value});
+		var processed_value = value;
+
+		if(value.indexOf('{') != 0){
+			processed_value = JSON.stringify(value);
+		}
+
+		return this.stack[this.type].push({'name': name, 'value': processed_value});
 	},
 
 	/**

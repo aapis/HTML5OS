@@ -28,7 +28,7 @@
 			this.Stack = new Stack(this._context);
 
 			//Window manager class setup
-			this.Window = new Window();
+			//this.Window = new Window();
 
 			//Error class setup
 			this.Error = new Error();
